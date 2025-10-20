@@ -255,7 +255,7 @@ fun Main(modifier: Modifier = Modifier) {
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd) // *** 關鍵：定位到 Box 的右下角 ***
-                .padding(20.dp), // 距離邊緣的間隔
+                .padding(150.dp,bottom = 150.dp), // 距離邊緣的間隔
 
             // 設置透明顏色和 0 邊緣/陰影，讓它看起來像純圖片
             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
