@@ -13,6 +13,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -160,29 +161,57 @@ fun Main(modifier: Modifier = Modifier) {
 
         }
 
+        // -------------------------------------------------------------
+        // *** 替換後的圖片切換按鈕 (取代原來的 "按鈕測試" 按鈕) ***
+        // -------------------------------------------------------------
+
         Spacer(modifier = Modifier.size(10.dp))
 
+        // 重新定義/使用 flag 狀態來追蹤當前動物的索引 (2=青蛙, 1=企鵝)
+        // 初始值設為青蛙的索引 2
+        var currentAnimalIndex by remember { mutableStateOf(2) }
+        val frogIndex = 2
+        val penguinIndex = 1
+
+        // 圖片切換按鈕 (取代了原來的 Text Button)
         Button(
             onClick = {
-                if (flag == "test"){
-                    flag = "abc"
-            }
-                else{
-                    flag = "test"
+                // 1. 執行切換邏輯
+                if (currentAnimalIndex == frogIndex) {
+                    currentAnimalIndex = penguinIndex
+                } else {
+                    currentAnimalIndex = frogIndex
                 }
 
+                // 2. 顯示 Toast 訊息
                 Toast.makeText(
                     context,
-                    "Compose 按鈕被點擊了!",
+                    "已切換為 ${AnimalsName[currentAnimalIndex]}",
                     Toast.LENGTH_SHORT
                 ).show()
-            }
-
+            },
+            // 設定透明顏色和 0 邊緣/陰影，讓它看起來像純圖片
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp),
+            contentPadding = PaddingValues(0.dp) // 移除內容的預設內邊距
         ) {
-            Text("按鈕測試")
+            // 根據 currentAnimalIndex 狀態，自動顯示對應圖片
+            Image(
+                painter = painterResource(id = Animals[currentAnimalIndex]),
+                contentDescription = AnimalsName[currentAnimalIndex] + "圖片按鈕",
+                modifier = Modifier.size(80.dp) // 設定圖片大小
+            )
         }
-        Text(text = flag)
+
+        // 顯示當前動物名稱的文字
+        Text(text = "當前切換動物: ${AnimalsName[currentAnimalIndex]}", fontSize = 20.sp)
+
+        // -------------------------------------------------------------
+        // *** 替換後的圖片切換按鈕 結束 ***
+        // -------------------------------------------------------------
+
         Spacer(modifier = Modifier.size(10.dp))
+
         Row{
             Button(onClick = {
                 mper?.release()  //釋放資源
